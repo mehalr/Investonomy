@@ -1,4 +1,4 @@
-# Investonomy (Finance probelem statement #1)
+# Investonomy (Finance problem statement #1)
 - The stock market is full of opportunities. However understanding the nitty gritty of the stock market is a complicated task.
 - The market has evolved into a complex beast in terms of size and volume and therefore predicting market trends is an important factor which will help users in making decisions for smarter investments.
 - Our project Investonomy solves this problem by using AI powered financial recommendations which aid in making an individual's investment strategies more lucrative than ever!
