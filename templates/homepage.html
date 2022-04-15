@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/investonomy/homepage.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Leckerli+One&family=Titillium+Web:wght@900&family=Comfortaa:wght@900&family=Poppins&display=swap" rel="stylesheet">
+{#    <link rel="stylesheet" href="bootstrap.min.css">#}
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/solid.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/3c35f8069e.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="arrow-btn">
+    <a href="#"><i class="fas fa-arrow-circle-up fa-3x" style="color: #202261"></i></a>
+</div>
+<header style="background-image: url('{% static "images/investonomy/bg.png" %}');">
+    <div class="header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a class="navbar-brand" href="#"><img src="{% static 'images/investonomy/logo-thumb.png' %}"><span style="color: #fff;"> Investonomy</span></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars" style="color: #ffff"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto" >
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#home">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#about">About us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#services">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact">Contact us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:user-register' %}"><button class="button button1">Sign up</button></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <main id="home">
+        <div class = "home-body">
+            <div class = "home-content">
+                <section class="left-sec">
+                    <h1>
+                        Algo trading and financial<br>
+                        recommendation application
+                    </h1>
+                    <p id="tagline">Enable trading with technology and automation and make your investment strategies lucrative than ever! </p>
+                    <p> </p>
+                    <a href="{% url 'users:user-login' %}"><button class="button button2">SIGN IN</button></a>
+                    <a href="{% url 'users:user-register' %}"><button class="button button4">REGISTER</button></a>
+                </section>
+                <div style="width: 100%">
+                    <img src = "{% static 'images/investonomy/im.png' %}" alt = "">
+                </div>
+            </div>
+        </div>
+    </main>
+</header>
+
+<!-- features section starts  -->
+
+<section class="services" id="services">
+    <div class="row">
+        <h2 class="section-heading">Our Services</h2>
+    </div>
+    <div class="row">
+        <div class="column">
+            <div class="card">
+                <div>
+                    <img src="{% static 'images/investonomy/1.png' %}">
+                </div>
+                <h3>Financial recommendations</h3>
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+                    consequatur necessitatibus eaque.
+                </p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div>
+                    <img src="{% static 'images/investonomy/2.png' %}">
+                </div>
+                <h3>Algorithmic trading</h3>
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+                    consequatur necessitatibus eaque.
+                </p>
+            </div>
+        </div>
+        <div class="column">
+            <div class="card">
+                <div>
+                    <img src="{% static 'images/investonomy/3.png' %}">
+                </div>
+                <h3>Stock price prediction</h3>
+                <p>
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
+                    consequatur necessitatibus eaque.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- features section edns -->
+<section id="about" class="about">
+    <main>
+        <div class = "home-body">
+            <div class = "home-content">
+                <div style="width: 100%">
+                    <img src = "{% static 'images/investonomy/about.png' %}" alt = "">
+                </div>
+                <section class="right-sec" style="padding-left: 50px;">
+                    <div class="about-card">
+                        <h2 class="main-title">ABOUT US</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                            tempor incididunt ut labore et dolore magna aliqua. </p>
+                        <button class="button button4">
+                            Learn more
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+</section>
+
+<section class = "contact-section" style="padding-top: 30px;" id="contact">
+    <h2 class="main-title" style="padding-left: 30px;">CONTACT US</h2>
+    <div class = "contact-body">
+        <div class = "contact-form">
+            <form>
+                <div>
+                    <input type = "text" class = "form-control" placeholder="First Name">
+                    <input type = "text" class = "form-control" placeholder="Last Name">
+                </div>
+                <div>
+                    <input type = "email" class = "form-control" placeholder="E-mail">
+                    <input type = "text" class = "form-control" placeholder="Phone">
+                </div>
+                <textarea rows = "5" placeholder="Message" class = "form-control"></textarea>
+                <input type = "submit" class = "send-btn" value = "Send message">
+            </form>
+            <div>
+                <img src = "{% static 'images/investonomy/Contact.png' %}" alt = "" style="width:85%">
+            </div>
+        </div>
+    </div>
+
+    <div class = "contact-footer">
+        <h3 style="font-family: 'Poppins', sans-serif;">Follow Us</h3>
+        <div class = "social-links">
+            <a href = "#" class = "fab fa-facebook-f"></a>
+            <a href = "#" class = "fab fa-twitter"></a>
+            <a href = "#" class = "fab fa-instagram"></a>
+            <a href = "#" class = "fab fa-linkedin"></a>
+            <a href = "#" class = "fab fa-youtube"></a><br>
+        </div>
+        <h3 style="font-family: 'Poppins', sans-serif;font-size: 15px;">©Copyright 2021</h3>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+
+
+</body>
+</html>
