@@ -14,7 +14,7 @@
 
 **Steps to run project**:
 
-*Libraries:*  Django, sklearn, pandas, python-decouple, fxcmpy, stocktrends, renko, tensorflow
+*Libraries:*  Django,tensorflow
 1. Install the libraries using pip install
 2. In the terminal type
 > `python manage.py makemigrations`
