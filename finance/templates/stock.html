@@ -1,0 +1,328 @@
+{% extends 'dashboard.html' %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'stylesheets/plugins/chart-morris/css/morris.css' %}">
+{% endblock %}
+
+
+{% block content %}
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Stock price prediction</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Predicting closing price of stocks</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <form id="get_stock_data_form">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>Enter the stocks ticker</label>
+                                                    <input type="text" class="form-control" placeholder="Ticker" name="ticker">
+
+                                                </div>
+                                                <button id="stock_submit" type="submit" class="btn btn-outline-secondary">Predict</button>
+                                            </div>
+                                        </form>
+                                        <hr>
+                                        <h4 id="predicted_value" style="display: none;">The closing price for tomorrow's stock is :
+                                            <span class="text-success">135.6</span>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-8 col-md-6">
+                                <div class="card Recent-Users">
+                                    <div class="card-header">
+                                        <h5>Stock trend for next 7 days</h5>
+                                    </div>
+                                    <div class="card-block px-0 py-3">
+                                        <div id="morris-line-chart" class="ChartShadow" style="height:400px"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6">
+                                <div class="card card-event">
+                                    <div class="card-block">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col">
+                                                <h5 class="m-0"> Top stocks to invest</h5>
+                                            </div>
+                                        </div>
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Stock</th>
+                                                <th>Rating</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>AAPL</td>
+                                                <td><label class="label theme-bg2 text-white f-14 f-w-400">40%</label></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>FB</td>
+                                                <td><label class="label theme-bg2 text-white f-14 f-w-400">30%</label></td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">3</th>
+                                                <td>GOOGL</td>
+                                                <td><label class="label theme-bg2 text-white f-14 f-w-400">50%</label></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Market sentiment analysis</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <div id="morris-donut-chart" style="height:300px"></div>
+                                            <p id="polarity"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xl-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Final analysis</h5>
+                                        </div>
+                                        <div class="card-block">
+                                            <h5 id="advise"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block script %}
+    <script src="{% static 'stylesheets/plugins/chart-morris/js/raphael.min.js' %}"></script>
+    <script src="{% static 'stylesheets/plugins/chart-morris/js/morris.min.js' %}"></script>
+
+    <script>
+
+    const get_week_forecast = (ticker, close) => {
+        requestData = {
+            'ticker': ticker,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }
+
+        $.ajax({
+            accept: 'application/json',
+            type: 'POST',
+            dataType: 'json',
+            url: "{% url 'finance:week-forecast' %}",
+            data: requestData,
+            success: function(data){
+                if (data.result == 'success'){
+                    console.log(Math.min(data['0'], data['1'], data['2'], data['3'], data['4'], data['5'], data['6']))
+                    console.log(Math.max(data['0'], data['1'], data['2'], data['3'], data['4'], data['5'], data['6']))
+                    setTimeout(function() {
+                Morris.Line({
+                    element: 'morris-line-chart',
+                    data: [{
+                        y: 'Day 1',
+                        a: data['0'],
+                    },
+                        {
+                            y: 'Day 2',
+                            a: data['1'],
+                        },
+                        {
+                            y: 'Day 3',
+                            a: data['2'],
+                        },
+                        {
+                            y: 'Day 4',
+                            a: data['3'],
+                        },
+                        {
+                            y: 'Day 5',
+                            a: data['4'],
+                        },
+                        {
+                            y: 'Day 6',
+                            a: data['5'],
+                        },
+                        {
+                            y: 'Day 7',
+                            a: data['6'],
+                        }
+                    ],
+                    xkey: 'y',
+                    redraw: true,
+                    resize: true,
+                    parseTime: false,
+                    smooth: false,
+                    ykeys: ['a'],
+                    ymin: parseInt(Math.min(data['0'], data['1'], data['2'], data['3'], data['4'], data['5'], data['6']) - 2),
+                    ymax: parseInt(Math.max(data['0'], data['1'], data['2'], data['3'], data['4'], data['5'], data['6']) + 2),
+                    hideHover: 'auto',
+                    responsive:true,
+                    labels: ['Series A'],
+                    lineColors: ['#1de9b6']
+                });
+                // [ line-angle-chart ] end
+
+            }, 300);
+                    console.log(data)
+                    get_sentiment(ticker, close, (parseInt(data['0'])+parseInt(data['1'])+parseInt(data['2'])+parseInt(data['3'])+parseInt(data['4'])+parseInt(data['5'])+parseInt(data['6']))/7)
+                }
+                else if(data.result == 'error'){
+                    console.log(data);
+                }
+            },
+            error: function(data){
+                console.log('ERROR..', data)
+            },
+            complete: function(data){
+                console.log('MISSION COMPLETED')
+            }
+            })
+    }
+
+    const get_sentiment = (ticker, close, mean) => {
+        console.log(close, mean)
+        requestData = {
+            'ticker': ticker,
+            'close': close,
+            'mean': mean,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }
+        $.ajax({
+            accept: 'application/json',
+            type: 'POST',
+            dataType: 'json',
+            url: "{% url 'finance:sentiment' %}",
+            data: requestData,
+            success: function(data){
+                if (data.result == 'success'){
+                    var graph = Morris.Donut({
+                        element: 'morris-donut-chart',
+                        data: [{
+                            value: data.positive,
+                            label: 'Positive'
+                        },
+                        {
+                        value: data.negative,
+                        label: 'Negative'
+                        },
+                        {
+                        value: data.neutral,
+                        label: 'Neutral'
+                        }
+                    ],
+                colors: [
+                    '#1de9b6',
+                    '#A389D4',
+                    '#1dc4e9',
+                ],
+                resize: true,
+                formatter: function(x) {
+                    return "val : " + x
+                }
+            });
+                    document.getElementById('advise').innerText = `According to the ML Predictions and Sentiment Analysis of Tweets, a ${data.idea} in ${ticker} stock is expected => ${data.decision}`;
+                    if (data.polarity <= 0){
+                        document.getElementById('polarity').innerText = 'Market Sentiment Polarity: Overall Negative';
+                    }
+                    else{
+                        document.getElementById('polarity').innerText = 'Market Sentiment Polarity: Overall Positive';
+                    }
+                    console.log(data)
+                }
+                else if(data.result == 'error'){
+                    console.log(data);
+                }
+            },
+            error: function(data){
+                console.log('ERROR..', data)
+            },
+            complete: function(data){
+                console.log('MISSION COMPLETED')
+            }
+        })
+    }
+
+
+    const get_stock_prediction = (ticker) => {
+        document.getElementById('stock_submit').textContent = 'Loading...'
+        requestData = {
+            'ticker': ticker,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'
+        }
+
+        $.ajax({
+            accept: 'application/json',
+            type: 'POST',
+            dataType: 'json',
+            url: "{% url 'finance:stock-model' %}",
+            data: requestData,
+            success: function(data){
+                if (data.result == 'success'){
+                    let predicted_element = document.getElementById('predicted_value');
+                    predicted_element.style.display = 'block';
+                    predicted_element.children[0].innerHTML = data.value;
+                    get_week_forecast(ticker, data.value)
+                }
+                else if(data.result == 'error'){
+                    console.log(data);
+                }
+            },
+            error: function(data){
+                console.log('ERROR..', data)
+            },
+            complete: function(data){
+                document.getElementById('stock_submit').textContent = 'Predict'
+                console.log('MISSION COMPLETED')
+            }
+        })
+    }
+
+    var form_element = document.getElementById('get_stock_data_form')
+    form_element.addEventListener('submit', function(event){
+        event.preventDefault()
+        ticker = event.target.elements.ticker.value
+        get_stock_prediction(ticker);
+    })
+    </script>
+
+{% endblock %}
